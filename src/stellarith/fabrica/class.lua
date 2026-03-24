@@ -92,7 +92,7 @@ local READONLY_FUNCTION = function(t, v) error(READONLY_ERROR:format(tostring(t)
 
 --- Macro to mark all field names provided on the `class` as readonly, trying to set them will
 --- result in an error.
---- @param class class class that owns fields to be marked readonly
+--- @param class class | any class that owns fields to be marked readonly
 --- @param ... string fields to be marked readonly
 function readonly(class, ...)
 	for _, field in ipairs({ ... }) do
