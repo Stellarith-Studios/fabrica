@@ -101,7 +101,7 @@ function readonly(class, ...)
 end
 
 --- Macro to define the same setter for all field names provided on the `class`.
---- @param class class
+--- @param class class | any
 --- @param setter function<table, any>
 --- @param ... string
 function uniform_setter(class, setter, ...)
