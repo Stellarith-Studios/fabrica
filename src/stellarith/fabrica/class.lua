@@ -76,6 +76,15 @@ function constructor(class, func)
 	setmetatable(class, mt)
 end
 
+--- Creates the destructor for the given `class`.
+function destructor(class, func)
+	local mt = getmetatable(class) or {}
+	mt.__close = function(_, ...)
+		return func(...)
+	end
+	setmetatable(class, mt)
+end
+
 --- Creates an instance of the given `class`, imports the `defaults` table if set, remains empty
 --- otherwise. `class` is required to be created using `Class()`
 --- @param class class | any
