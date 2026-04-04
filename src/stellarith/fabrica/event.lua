@@ -2,7 +2,11 @@ require("stellarith.fabrica.class")
 
 --- @class Event
 --- @field callbacks table<fun(...: any)>
+--- @field subscribe fun(self: Event, callback: fun(...: any)): integer
+--- @field unsubscribe fun(self: Event, caller_id: integer)
+--- @field push_call fun(self: Event, ...: any)
 
+--- @overload fun(): Event | any
 Event = Class()
 
 constructor(Event, function()

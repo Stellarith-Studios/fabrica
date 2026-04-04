@@ -6,20 +6,20 @@ require("stellarith.fabrica.class")
 --- Example:
 --- ```
 --- -- Linear linked list implementation:
----	local node2 = LinkedListNode(5, nil)
----	local node1 = LinkedListNode(5, node2)
----	local node0 = LinkedListNode(5, node1)
+--- local node2 = LinkedListNode(5, nil)
+--- local node1 = LinkedListNode(5, node2)
+--- local node0 = LinkedListNode(5, node1)
 --- ```
 ---
 --- Example:
 --- ```
 --- -- Cylic linked list implementation:
----	local node1 = LinkedListNode(5, nil)
----	local node0 = LinkedListNode(5, node1)
+--- local node1 = LinkedListNode(5, nil)
+--- local node0 = LinkedListNode(5, node1)
 --- node1.next = node0
 --- ```
 ---
----	**Cyclic lists where the end references the start as next
+--- **Cyclic lists where the end references the start as next
 --- are much faster and more supported than cyclic lists where
 --- the end node references a median value due to the iteration
 --- cap and how iterations are handled.**
@@ -68,9 +68,9 @@ end)
 ---
 --- Example:
 --- ```
----	local node2 = LinkedListNode(5, nil)
----	local node1 = LinkedListNode(5, node2)
----	local node0 = LinkedListNode(5, node1)
+--- local node2 = LinkedListNode(5, nil)
+--- local node1 = LinkedListNode(5, node2)
+--- local node0 = LinkedListNode(5, node1)
 --- assert(node0.next.next == node0:skip(2))
 --- ```
 --- @field skip fun(self: LinkedListNode<T>, steps: integer): LinkedListNode<any>
@@ -81,9 +81,9 @@ end)
 ---
 --- Example:
 --- ```
----	local node2 = LinkedListNode(5, nil)
----	local node1 = LinkedListNode(5, node2)
----	local node0 = LinkedListNode(5, node1)
+--- local node2 = LinkedListNode(5, nil)
+--- local node1 = LinkedListNode(5, node2)
+--- local node0 = LinkedListNode(5, node1)
 --- assert(node0.next.next == node0:skip(2))
 --- ```
 --- @param steps integer
@@ -184,7 +184,7 @@ end
 --- node1.next = node0
 --- local iterations = 0
 --- for _value in node0:iter() do
---- 	iterations = iterations + 1
+---  iterations = iterations + 1
 --- end
 --- assert(iterations == 2)
 --- ```
@@ -201,7 +201,7 @@ end
 --- node1.next = node0
 --- local iterations = 0
 --- for _value in node0:iter() do
---- 	iterations = iterations + 1
+---  iterations = iterations + 1
 --- end
 --- assert(iterations == 2)
 --- ```

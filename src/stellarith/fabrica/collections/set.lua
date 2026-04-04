@@ -166,17 +166,21 @@ end
 --- @class Set
 --- Iterates over the elements of the set, mapping each element to
 --- the return value of `func(e)` for each element `e` there is.
---- @field map fun(self: Set, func: fun(element: any): any)
+--- @field map fun(self: Set, func: fun(element: any): any): Set
 
 --- Iterates over the elements of the set, mapping each element to
 --- the return value of `func(e)` for each element `e` there is.
+--- Returns the same set with mapped values.
 --- @param func fun(element: any): any
+--- @return Set
 function Set:map(func)
 	local entries = {}
 	for element, _ in pairs(self.entries) do
 		entries[func(element)] = EXISTS
 	end
 	self.entries = entries
+
+	return self
 end
 
 --- @class Set
