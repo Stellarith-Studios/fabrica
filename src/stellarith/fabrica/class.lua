@@ -2,7 +2,8 @@ local PRIVATE_PREFIX = "_"
 local GET_PREFIX = "get_"
 local SET_PREFIX = "set_"
 
---- @alias class table
+--- @alias class_table table
+--- @alias class class_table | function
 
 local function to_private_name(property_name)
 	return PRIVATE_PREFIX .. property_name
@@ -17,15 +18,28 @@ function rawgetp(instance, public_key)
 end
 
 local function standard_getter(class, instance, key)
-	local top_level_declaration = rawget(class, key)
-	if top_level_declaration then
-		return top_level_declaration
+	local static_declaration = rawget(class, key)
+	if static_declaration then
+		return static_declaration
 	end
 
 	local getter_function = rawget(class, GET_PREFIX .. key)
 	if getter_function then
 		return getter_function(instance)
 	end
+
+	if class.base then
+		local base_static_declaration = rawget(class.base, key)
+		if base_static_declaration then
+			return base_static_declaration
+		end
+
+		local base_getter_function = rawget(class.base, GET_PREFIX .. key)
+		if base_getter_function then
+			return base_getter_function(instance)
+		end
+	end
+
 	return rawgetp(instance, key)
 end
 
@@ -46,6 +60,9 @@ local function standard_setter(class, instance, key, value)
 	local setter_function = rawget(class, SET_PREFIX .. key)
 	if setter_function then
 		setter_function(instance, value)
+	elseif class.base then
+		local base_setter_function = rawget(class.base, SET_PREFIX .. key)
+		base_setter_function(instance, value)
 	else
 		rawsetp(instance, key, value)
 	end
@@ -57,15 +74,21 @@ end
 
 --- Creates a class. A class is a metatable *and* indextable for instances of that class to be
 --- created, containing definitions for fields and methods.
---- @return class
-function Class()
-	local class = {}
+--- @param base class?
+--- @return class_table
+function Class(base)
+	local class = {
+		base = base,
+	}
 	getterize(class)
 	setterize(class)
 	return class
 end
 
 --- Creates the constructor for the given `class`.
+--- @generic T
+--- @param class class_table | class
+--- @param func fun(...): T
 function constructor(class, func)
 	local mt = getmetatable(class) or {}
 	-- since class constructors dont need the class to be provided in the first argument let's
@@ -73,7 +96,7 @@ function constructor(class, func)
 	mt.__call = function(_, ...)
 		return func(...)
 	end
-	setmetatable(class, mt)
+	setmetatable(class --[[@as class_table]], mt)
 end
 
 --- Creates the destructor for the given `class`.
@@ -87,12 +110,13 @@ end
 
 --- Creates an instance of the given `class`, imports the `defaults` table if set, remains empty
 --- otherwise. `class` is required to be created using `Class()`
---- @param class class | any
+--- @generic T
+--- @param class class_table | class
 --- @param defaults? table
---- @return unknown
+--- @return T
 function new(class, defaults)
 	local instance = defaults or {}
-	setmetatable(instance, class)
+	setmetatable(instance, class --[[@as class_table]])
 	return instance
 end
 
@@ -105,7 +129,7 @@ local READONLY_FUNCTION = function(t, v) error(READONLY_ERROR:format(tostring(t)
 
 --- Macro to mark all field names provided on the `class` as readonly, trying to set them will
 --- result in an error.
---- @param class class | any class that owns fields to be marked readonly
+--- @param class class class that owns fields to be marked readonly
 --- @param ... string fields to be marked readonly
 function readonly(class, ...)
 	for _, field in ipairs({ ... }) do
@@ -114,12 +138,22 @@ function readonly(class, ...)
 end
 
 --- Macro to define the same setter for all field names provided on the `class`.
---- @param class class | any
---- @param setter function<table, any>
+--- @param class class
+--- @param setter fun(t: table, field: string, value: any)
 --- @param ... string
 function uniform_setter(class, setter, ...)
 	for _, field in ipairs({ ... }) do
 		class["set_" .. field] = function(t, value) setter(t, field, value) end
+	end
+end
+
+--- Macro to define the same getter for all field names provided on the `class`.
+--- @param class class
+--- @param getter fun(t: table, field: string)
+--- @param ... string
+function uniform_getter(class, getter, ...)
+	for _, field in ipairs({ ... }) do
+		class["get_" .. field] = function(t) getter(t, field) end
 	end
 end
 
