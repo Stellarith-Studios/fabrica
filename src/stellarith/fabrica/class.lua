@@ -122,7 +122,7 @@ end
 
 --- Specifies a readonly type, meant to be used with actual
 --- other types.
---- @class readonly
+--- @class readonly: any
 
 local READONLY_ERROR = "Trying to set readonly field %s: %s"
 local READONLY_FUNCTION = function(t, v) error(READONLY_ERROR:format(tostring(t), tostring(v))) end
