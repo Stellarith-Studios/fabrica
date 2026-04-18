@@ -1,0 +1,94 @@
+require("stellarith.fabrica.class")
+
+local function ansi(value)
+	return string.char(27) .. '[' .. tostring(value) .. 'm'
+end
+
+--- A struct containing ANSI foreground and background colors used to
+--- format the terminal message.
+--- @class AnsiFormat
+--- Foreground color of the ANSI formatter.
+--- @field fg AnsiFormat.Color
+--- Background color of the ANSI formatter.
+--- @field bg AnsiFormat.Color
+--- Intensity of the ANSI text.
+--- @field intensity AnsiFormat.ColorIntensity
+--- Wheather the text is underscored.
+--- @field underscore boolean
+--- Wheather the text periodically blinks or not.
+--- @field blink boolean
+--- Wheather the text is in reverse or not.
+--- @field reverse boolean
+--- Wheather the text is hidden or not.
+--- @field hidden boolean
+
+--- Constructs a new `AnsiFormat`.
+--- @overload fun(fg: AnsiFormat.Color?, bg: AnsiFormat.Color?, intensity: AnsiFormat.ColorIntensity?, underscore: boolean?, blink: boolean?, reverse: boolean?, hidden: boolean?): AnsiFormat
+AnsiFormat = Class()
+
+--- @enum AnsiFormat.Color
+AnsiFormat.Color = {
+	REGULAR = 0,
+	BLACK = 30,
+	RED = 31,
+	GREEN = 32,
+	YELLOW = 33,
+	BLUE = 34,
+	MAGENTA = 35,
+	CYAN = 36,
+	WHITE = 37,
+}
+
+local fmt_reset = ansi(AnsiFormat.Color.REGULAR)
+
+--- @enum AnsiFormat.ColorIntensity
+AnsiFormat.ColorIntensity = {
+	REGULAR = 0,
+	BRIGHT = 1,
+	DIM = 2,
+}
+
+constructor(AnsiFormat, function(fg, bg, intensity, underscore, blink, reverse, hidden)
+	return new(AnsiFormat, {
+		_fg = fg or AnsiFormat.Color.REGULAR,
+		_bg = bg or AnsiFormat.Color.REGULAR,
+		_intensity = intensity or AnsiFormat.ColorIntensity.REGULAR,
+		_underscore = underscore == true,
+		_blink = blink == true,
+		_reverse = reverse == true,
+		_hidden = hidden == true,
+	})
+end)
+
+--- Constructs a new `AnsiFormat` with regular properties.
+--- @return AnsiFormat
+function AnsiFormat.regular()
+	return AnsiFormat()
+end
+
+--- Formats the string with this `AnsiFormat`'s properties.
+--- @param s string
+--- @return string
+function AnsiFormat:format(s)
+	local prefix = ansi(self.fg)
+	if self.bg ~= AnsiFormat.Color.REGULAR then
+		prefix = prefix .. ansi(self.bg + 10)
+	end
+	if self.intensity ~= AnsiFormat.ColorIntensity.REGULAR then
+		prefix = prefix .. ansi(self.intensity)
+	end
+	if self.underscore then
+		prefix = prefix .. ansi(4)
+	end
+	if self.blink then
+		prefix = prefix .. ansi(5)
+	end
+	if self.reverse then
+		prefix = prefix .. ansi(7)
+	end
+	if self.hidden then
+		prefix = prefix .. ansi(8)
+	end
+
+	return prefix .. s .. fmt_reset
+end

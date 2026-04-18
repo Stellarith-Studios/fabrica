@@ -54,3 +54,5 @@ function Event:push_call(...)
 		func(...)
 	end
 end
+
+return Event

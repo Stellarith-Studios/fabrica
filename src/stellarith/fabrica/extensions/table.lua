@@ -107,3 +107,5 @@ function table.combine(dominant, other)
 		other[k] = v
 	end
 end
+
+return table

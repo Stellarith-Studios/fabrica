@@ -36,3 +36,5 @@ function string.snake_case(s)
 	local res, _ = s:lower():gsub(" ", "_")
 	return res
 end
+
+return string
