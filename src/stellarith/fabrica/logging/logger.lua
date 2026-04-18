@@ -7,12 +7,14 @@ require("stellarith.fabrica.logging.ansiformat")
 --- @field silent boolean
 --- The prefix attached to the logger.
 --- @field prefix string
+--- @field formatter AnsiFormat
+--- @field history_enabled boolean
 
 --- Constructs a new `Logger`.
 --- @overload fun(prefix: string, format: AnsiFormat?, silent: boolean?, enable_history: boolean?): Logger
 Logger = Class()
 
-constructor(Logger, function(prefix, format, silent, enable_history)
+constructor(Logger, function(prefix, formatter, silent, enable_history)
 	if silent == nil then
 		silent = false
 	end
@@ -24,8 +26,8 @@ constructor(Logger, function(prefix, format, silent, enable_history)
 	return new(Logger, {
 		_silent = silent,
 		_prefix = prefix,
-		_format = format or AnsiFormat.regular(),
-		_history_enabled = enable_history,
+		_formatter = formatter or AnsiFormat.regular(),
+		_history_enabled = enable_history ~= false,
 		_history = {}
 	})
 end)
@@ -123,15 +125,15 @@ end
 --- if the logger is not `silent`.
 --- @param ... any
 function Logger:print(...)
-	--- @type number
-	local current
-	if time and time.now then
-		current = time.now()
-	else
-		current = os.clock()
-	end
 	local line = tostring(...)
 	if self.history_enabled == true then
+		--- @type number
+		local current
+		if time and time.now then
+			current = time.now()
+		else
+			current = os.clock()
+		end
 		local history = {
 			time = current,
 			content = line,
@@ -140,7 +142,7 @@ function Logger:print(...)
 	end
 
 	if not self.silent then
-		print("[" .. tostring(current) .. "] [" .. self.prefix .. "] " .. line)
+		print(self.formatter:format("[" .. self.prefix .. "]") .. " " .. line)
 	end
 end
 
