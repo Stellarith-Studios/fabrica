@@ -120,9 +120,11 @@ function new(class, defaults)
 	return instance
 end
 
---- Specifies a readonly type, meant to be used with actual
---- other types.
+--- Annotates a readonly type, meant to be used with actual other types.
 --- @class readonly: any
+
+--- Annotates a static type, meant to be used with actual other types.
+--- @class static: readonly any
 
 local READONLY_ERROR = "Trying to set readonly field %s: %s"
 local READONLY_FUNCTION = function(t, v) error(READONLY_ERROR:format(tostring(t), tostring(v))) end
