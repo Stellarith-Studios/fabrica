@@ -26,7 +26,7 @@
 -- USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- -----------------------------------------------------------------
 -- File Authors:
---   - Yarkın
+--   - Yarkın Saatçi (spigbop)
 -- -----------------------------------------------------------------
 require("stellarith.fabrica.collections.linkedlist")
 require("stellarith.fabrica.collections.queue")
