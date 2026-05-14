@@ -26,7 +26,7 @@
 -- USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- -----------------------------------------------------------------
 -- File Authors:
---   - Yarkın Saatçi (spigbop)
+--   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 require("stellarith.fabrica.collections")
 require("stellarith.fabrica.class")

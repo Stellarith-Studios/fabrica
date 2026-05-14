@@ -26,7 +26,7 @@
 -- USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- -----------------------------------------------------------------
 -- File Authors:
---   - Yarkın Saatçi (spigbop)
+--   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 --- Shallow duplicates a table, that is this table's key value pairs
 --- are copied but any table value still points to the same table.

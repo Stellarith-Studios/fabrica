@@ -26,7 +26,7 @@
 -- USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- -----------------------------------------------------------------
 -- File Authors:
---   - Yarkın Saatçi (spigbop)
+--   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 --- Returns wheather the string `s` begins with the string `b`.
 --- @param s string

@@ -1,6 +1,6 @@
 -- -----------------------------------------------------------------
 -- Fabrica
--- collections.lua
+-- fun.lua
 -- -----------------------------------------------------------------
 -- Copyright (c) 2026 Stellarith Studios
 --
@@ -28,7 +28,39 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.collections.linkedlist")
-require("stellarith.fabrica.collections.queue")
-require("stellarith.fabrica.collections.set")
-require("stellarith.fabrica.collections.stack")
+fun = fun or {}
+
+--- Clones a function invalidating all upvalue references. May return `nil` if the function could not be cloned.
+--- @param f function function to be cloned
+--- @return function? clone
+--- @return string? err clone error message
+function fun.clone(f)
+	local ok, dumped = pcall(string.dump, f)
+	if not ok then
+		return nil, dumped
+	end
+
+	return load(dumped)
+end
+
+--- Copies a function with all upvalues. May return `nil` if the function could not be copied.
+--- @param f function function to be copied
+--- @return function? copy
+--- @return string? copy error message
+function fun.copy(f)
+	local copy, err = fun.clone(f)
+
+	if not copy then
+		return nil, err
+	end
+
+	local i = 1
+	while true do
+		local name, _ = debug.getupvalue(f, i)
+		if not name then break end
+		debug.upvaluejoin(copy, i, f, i)
+		i = i + 1
+	end
+
+	return copy
+end

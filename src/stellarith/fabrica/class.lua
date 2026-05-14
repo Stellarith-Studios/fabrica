@@ -26,7 +26,7 @@
 -- USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- -----------------------------------------------------------------
 -- File Authors:
---   - Yarkın Saatçi (spigbop)
+--   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 local PRIVATE_PREFIX = "_"
 local GET_PREFIX = "get_"
