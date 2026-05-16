@@ -30,8 +30,6 @@
 -- -----------------------------------------------------------------
 require("stellarith.fabrica.class")
 
---- @alias non_nil any
-
 --- A special list containing unique elements only once. Indexing
 --- elements have a time complexity of `O(1)`.
 ---
@@ -46,7 +44,7 @@ require("stellarith.fabrica.class")
 --- elements and the values are all `true`.
 ---
 --- **Note:** An element of a set can not be of nil value.
---- @field entries table<non_nil, boolean>
+--- @field entries table<any, boolean>
 
 local EXISTS = true
 
@@ -174,7 +172,7 @@ end
 --- end
 --- ```
 --- @return function
---- @return table<non_nil, boolean>
+--- @return table<any, boolean>
 function Set:iter()
 	return next, self.entries
 end
@@ -395,11 +393,11 @@ end
 
 --- @class Set
 --- Returns wheather the sets are disjointed or not. (share no common element)
---- This is internally the same as `not self:intersects(other_set)`
+--- This is the same as `not self:intersects(other_set)`
 --- @field is_disjointed_with fun(self: Set, other_set: Set): boolean
 
 --- Returns wheather the sets are disjointed or not. (share no common element)
---- This is internally the same as `not self:intersects(other_set)`
+--- This is the same as `not self:intersects(other_set)`
 --- @param other_set any
 --- @return boolean
 function Set:is_disjointed_with(other_set)

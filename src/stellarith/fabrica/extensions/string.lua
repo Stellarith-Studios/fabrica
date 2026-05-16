@@ -59,7 +59,7 @@ function string.contains(s, pattern, init, plain)
 	return start ~= nil
 end
 
---- comment
+--- Creates a new string with the string `s` converted to snake_case.
 --- @param s string
 --- @return string
 function string.snake_case(s)

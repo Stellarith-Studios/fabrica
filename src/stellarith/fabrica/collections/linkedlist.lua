@@ -30,7 +30,7 @@
 -- -----------------------------------------------------------------
 require("stellarith.fabrica.class")
 
---- A node contaning a `value` and a pointer (`next`) to another
+--- A node contaning a `value` and a reference (`next`) to another
 --- linked list node.
 ---
 --- Example:

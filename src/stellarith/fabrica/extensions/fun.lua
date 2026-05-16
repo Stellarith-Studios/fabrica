@@ -28,6 +28,7 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
+--- Function extensions and utilites.
 fun = fun or {}
 
 --- Clones a function invalidating all upvalue references. May return `nil` if the function could not be cloned.
@@ -43,11 +44,7 @@ function fun.clone(f)
 	return load(dumped)
 end
 
---- Copies a function with all upvalues. May return `nil` if the function could not be copied.
---- @param f function function to be copied
---- @return function? copy
---- @return string? copy error message
-function fun.copy(f)
+local function fun_copy_linked(f)
 	local copy, err = fun.clone(f)
 
 	if not copy then
@@ -63,4 +60,35 @@ function fun.copy(f)
 	end
 
 	return copy
+end
+
+local function fun_copy_deep(f)
+	local copy, err = fun.clone(f)
+
+	if not copy then
+		return nil, err
+	end
+
+	local i = 1
+	while true do
+		local name, value = debug.getupvalue(f, i)
+		if not name then break end
+		debug.setupvalue(copy, i, value)
+		i = i + 1
+	end
+
+	return copy
+end
+
+--- Copies a function with all upvalues. May return `nil` if the function could not be copied.
+--- @param f function function to be copied
+--- @param linked boolean? if set to `false`, all upvalues of the function `f` are also cloned. `true` by default.
+--- @return function? copy
+--- @return string? copy error message
+function fun.copy(f, linked)
+	if linked == false then
+		fun_copy_deep(f)
+	else
+		fun_copy_linked(f)
+	end
 end
