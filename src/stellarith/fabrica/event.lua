@@ -50,6 +50,8 @@ require("stellarith.fabrica.class")
 --- `...`.
 --- @field push_call fun(self: Event, ...: any)
 
+--- @alias Event.caller_id integer
+
 --- Constructs a new Event.
 --- @overload fun(): Event
 Event = Class()
@@ -57,23 +59,31 @@ Event = Class()
 constructor(Event, function()
 	return new(Event, {
 		_callbacks = {},
+		_next_id = 0,
 	})
 end)
 
 --- Adds the `callback` to the called functions when this event is pushed.
+---
 --- Returns the caller id.
 --- @param callback fun(...: any)
---- @return integer
+--- @return Event.caller_id
 function Event:subscribe(callback)
-	table.insert(self.callbacks, callback)
-	return #self.callbacks
+	self.next_id = self.next_id + 1
+	self.callbacks[self.next_id] = callback
+	return self.next_id
 end
 
 --- Removes the callback with the specific `caller_id` from the list of
 --- functions called when this event is pushed.
---- @param caller_id integer
+---
+--- Returns wheather the `caller_id` existed in the event or not.
+--- @param caller_id Event.caller_id
+--- @return boolean
 function Event:unsubscribe(caller_id)
-	table.remove(self.callbacks, caller_id)
+	local before = self.callbacks[caller_id]
+	self.callbacks[caller_id] = nil
+	return before ~= nil
 end
 
 --- --- Emits the event, calling all callback functions with the parameters
