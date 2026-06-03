@@ -29,6 +29,7 @@
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 require("stellarith.fabrica.class")
+require("stellarith.fabrica.extensions.table")
 
 --- A special list containing unique elements only once. Indexing
 --- elements have a time complexity of `O(1)`.
@@ -110,16 +111,12 @@ function Set:remove(element)
 end
 
 --- @class Set
---- Removes every element from the set. Doesn't destroy the actual set.
---- (Abandons the previous entry table, leaving the garbage collector to
---- deallocate it)
+--- Removes every element from the set.
 --- @field clear fun(self: Set)
 
---- Removes every element from the set. Doesn't destroy the actual set.
---- (Abandons the previous entry table, leaving the garbage collector to
---- deallocate it)
+--- Removes every element from the set.
 function Set:clear()
-	self.entries = {}
+	table.clear(self.entries)
 end
 
 --- @class Set

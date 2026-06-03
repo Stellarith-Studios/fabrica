@@ -28,6 +28,27 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
+
+--- Clears every entry in table `t`.
+--- @param t table
+function table.clear(t)
+	local count = #t
+	for i = 0, count do
+		t[i] = nil
+	end
+end
+
+--- Checks if the table `t` is empty.
+--- @param t table
+--- @return boolean
+function table.is_empty(t)
+	local next = next
+	if next(t) == nil then
+		return true
+	end
+	return false
+end
+
 --- Shallow duplicates a table, that is this table's key value pairs
 --- are copied but any table value still points to the same table.
 --- @param t table
