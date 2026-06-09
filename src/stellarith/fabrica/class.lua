@@ -150,7 +150,7 @@ function new(class, defaults)
 	return instance
 end
 
---- Annotates a readonly type, meant to be used with actual other types.
+--- This field is readonly.
 --- @class readonly: any
 
 local READONLY_ERROR = "Trying to set readonly field %s: %s"
