@@ -28,7 +28,7 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.class")
+local Class = require("stellarith.fabrica.class")
 
 --- A special list containing elements of `any` type. Follows the
 --- principle of *Last in First Out*, (LIFO) where the first element
@@ -40,8 +40,8 @@ require("stellarith.fabrica.class")
 --- @overload fun(...: any): Stack
 Stack = Class()
 
-constructor(Stack, function(...)
-	return new(Stack, { _remaining = { ... } })
+Class.constructor(Stack, function(...)
+	return Class.new(Stack, { _remaining = { ... } })
 end)
 
 --- @class Stack
@@ -58,7 +58,7 @@ end)
 --- @param list table<integer, any>
 --- @return Stack
 function Stack.from_list(list)
-	return new(Stack, { _remaining = list })
+	return Class.new(Stack, { _remaining = list })
 end
 
 --- @class Stack

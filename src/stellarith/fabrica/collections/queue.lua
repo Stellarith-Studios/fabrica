@@ -28,7 +28,7 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.class")
+local Class = require("stellarith.fabrica.class")
 
 --- A special list containing elements of `any` type. Follows the
 --- principle of *First in First out*, (FIFO) where the first element
@@ -38,10 +38,10 @@ require("stellarith.fabrica.class")
 --- @field remaining table<integer, any>
 
 --- @overload fun(...: any): Queue
-Queue = Class()
+local Queue = Class()
 
-constructor(Queue, function(...)
-	return new(Queue, { _remaining = { ... } })
+Class.constructor(Queue, function(...)
+	return Class.new(Queue, { _remaining = { ... } })
 end)
 
 --- @class Queue
@@ -58,7 +58,7 @@ end)
 --- @param list table<integer, any>
 --- @return Queue
 function Queue.from_list(list)
-	return new(Queue, { _remaining = list })
+	return Class.new(Queue, { _remaining = list })
 end
 
 --- @class Queue

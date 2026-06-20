@@ -28,7 +28,7 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.class")
+local Class = require("stellarith.fabrica.class")
 
 --- A node contaning a `value` and a reference (`next`) to another
 --- linked list node.
@@ -66,7 +66,7 @@ require("stellarith.fabrica.class")
 
 --- @generic T
 --- @overload fun(value: T?, next: LinkedListNode<any>?): LinkedListNode<T>
-LinkedListNode = Class()
+local LinkedListNode = Class()
 
 --- The index at which the linked tree iterations stop, every
 --- iteration is one-indexed to keep the lua tradition. The
@@ -83,8 +83,8 @@ local function cap_iteration(i)
 	return false
 end
 
-constructor(LinkedListNode, function(value, next)
-	return new(LinkedListNode, {
+Class.constructor(LinkedListNode, function(value, next)
+	return Class.new(LinkedListNode, {
 		_value = value,
 		_next = next
 	})

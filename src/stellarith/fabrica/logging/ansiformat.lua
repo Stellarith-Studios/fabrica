@@ -28,7 +28,7 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.class")
+local Class = require("stellarith.fabrica.class")
 
 local function ansi(value)
 	return string.char(27) .. '[' .. tostring(value) .. 'm'
@@ -54,7 +54,7 @@ end
 
 --- Constructs a new `AnsiFormat`.
 --- @overload fun(fg: AnsiFormat.Color?, bg: AnsiFormat.Color?, intensity: AnsiFormat.ColorIntensity?, underscore: boolean?, blink: boolean?, reverse: boolean?, hidden: boolean?): AnsiFormat
-AnsiFormat = Class()
+local AnsiFormat = Class()
 
 --- @enum AnsiFormat.Color
 AnsiFormat.Color = {
@@ -78,8 +78,8 @@ AnsiFormat.ColorIntensity = {
 	DIM = 2,
 }
 
-constructor(AnsiFormat, function(fg, bg, intensity, underscore, blink, reverse, hidden)
-	return new(AnsiFormat, {
+Class.constructor(AnsiFormat, function(fg, bg, intensity, underscore, blink, reverse, hidden)
+	return Class.new(AnsiFormat, {
 		_fg = fg or AnsiFormat.Color.REGULAR,
 		_bg = bg or AnsiFormat.Color.REGULAR,
 		_intensity = intensity or AnsiFormat.ColorIntensity.REGULAR,
@@ -122,3 +122,5 @@ function AnsiFormat:format(s)
 
 	return prefix .. s .. fmt_reset
 end
+
+return AnsiFormat

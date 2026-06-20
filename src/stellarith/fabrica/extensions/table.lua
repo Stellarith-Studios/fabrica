@@ -29,9 +29,12 @@
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 
+--- @class tablelibext: tablelib
+local tablext = table or {}
+
 --- Clears every entry in table `t`.
 --- @param t table
-function table.clear(t)
+function tablext.clear(t)
 	local count = #t
 	for i = 0, count do
 		t[i] = nil
@@ -41,7 +44,7 @@ end
 --- Checks if the table `t` is empty.
 --- @param t table
 --- @return boolean
-function table.is_empty(t)
+function tablext.is_empty(t)
 	local next = next
 	if next(t) == nil then
 		return true
@@ -53,7 +56,7 @@ end
 --- are copied but any table value still points to the same table.
 --- @param t table
 --- @return table
-function table.clone(t)
+function tablext.clone(t)
 	local nt = {}
 	for k, v in pairs(t) do
 		nt[k] = v
@@ -97,7 +100,7 @@ end
 --- reached.
 --- @param t table
 --- @return table
-function table.copy(t, iteration_cap)
+function tablext.copy(t, iteration_cap)
 	if iteration_cap then
 		return table_capped_copy(t, 0, iteration_cap)
 	else
@@ -109,7 +112,7 @@ end
 --- on the table `t`, changes values in-place.
 --- @param t table
 --- @param func fun(key: any): any
-function table.map(t, func)
+function tablext.map(t, func)
 	for k, _ in pairs(t) do
 		t[k] = func(k)
 	end
@@ -120,7 +123,7 @@ end
 --- @param t any
 --- @param func any
 --- @return table
-function table.mapped(t, func)
+function tablext.mapped(t, func)
 	local nt = {}
 	for k, _ in pairs(t) do
 		nt[k] = func(k)
@@ -131,7 +134,7 @@ end
 --- Sets every key's value to `v` on the table `t`.
 --- @param t table
 --- @param v any
-function table.splat(t, v)
+function tablext.splat(t, v)
 	for k, _ in pairs(t) do
 		t[k] = v
 	end
@@ -142,7 +145,7 @@ end
 --- @param t table
 --- @param v any
 --- @return table
-function table.splatted(t, v)
+function tablext.splatted(t, v)
 	local nt = {}
 	for k, _ in pairs(t) do
 		nt[k] = v
@@ -153,10 +156,10 @@ end
 --- Adds all key value pairs in table `dominant` to table `other`.
 --- @param dominant table
 --- @param other table
-function table.combine(dominant, other)
+function tablext.combine(dominant, other)
 	for k, v in pairs(dominant) do
 		other[k] = v
 	end
 end
 
-return table
+return tablext

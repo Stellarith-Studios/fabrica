@@ -28,8 +28,8 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.class")
-require("stellarith.fabrica.logging.ansiformat")
+local Class = require("stellarith.fabrica.class")
+local AnsiFormat = require("stellarith.fabrica.logging.ansiformat")
 
 --- A custom prefixed logger.
 --- @class Logger
@@ -42,9 +42,9 @@ require("stellarith.fabrica.logging.ansiformat")
 
 --- Constructs a new `Logger`.
 --- @overload fun(prefix: string, format: AnsiFormat?, silent: boolean?, enable_history: boolean?): Logger
-Logger = Class()
+local Logger = Class()
 
-constructor(Logger, function(prefix, formatter, silent, enable_history)
+Class.constructor(Logger, function(prefix, formatter, silent, enable_history)
 	if silent == nil then
 		silent = false
 	end
@@ -53,7 +53,7 @@ constructor(Logger, function(prefix, formatter, silent, enable_history)
 		enable_history = true
 	end
 
-	return new(Logger, {
+	return Class.new(Logger, {
 		_silent = silent,
 		_prefix = prefix,
 		_formatter = formatter or AnsiFormat.regular(),

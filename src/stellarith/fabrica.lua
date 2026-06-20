@@ -28,6 +28,12 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.collections")
-require("stellarith.fabrica.class")
-require("stellarith.fabrica.enum")
+return {
+	collections = require("stellarith.fabrica.collections"),
+	extensions = require("stellarith.fabrica.extensions"),
+	logging = require("stellarith.fabrica.logging"),
+
+	Class = require("stellarith.fabrica.class"),
+	Event = require("stellarith.fabrica.event"),
+	Reflection = require("stellarith.fabrica.reflection")
+}

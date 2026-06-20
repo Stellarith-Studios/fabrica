@@ -1,6 +1,6 @@
 -- -----------------------------------------------------------------
 -- Fabrica
--- collections.lua
+-- extensions.lua
 -- -----------------------------------------------------------------
 -- Copyright (c) 2026 Stellarith Studios
 --
@@ -29,8 +29,6 @@
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 return {
-	LinkedListNode = require("stellarith.fabrica.collections.linkedlist"),
-	Queue = require("stellarith.fabrica.collections.queue"),
-	Set = require("stellarith.fabrica.collections.set"),
-	Stack = require("stellarith.fabrica.collections.stack"),
+	string = require("stellarith.fabrica.extensions.string"),
+	table = require("stellarith.fabrica.extensions.table"),
 }

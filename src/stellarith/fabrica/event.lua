@@ -28,7 +28,7 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.class")
+local Class = require("stellarith.fabrica.class")
 
 --- A (un)subscribable event that calls a list of functions when pushed.
 --- @class Event
@@ -54,10 +54,10 @@ require("stellarith.fabrica.class")
 
 --- Constructs a new Event.
 --- @overload fun(): Event
-Event = Class()
+local Event = Class()
 
-constructor(Event, function()
-	return new(Event, {
+Class.constructor(Event, function()
+	return Class.new(Event, {
 		_callbacks = {},
 		_next_id = 0,
 	})

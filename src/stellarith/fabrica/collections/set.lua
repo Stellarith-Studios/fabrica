@@ -28,8 +28,8 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
-require("stellarith.fabrica.class")
-require("stellarith.fabrica.extensions.table")
+local Class = require("stellarith.fabrica.class")
+local table = require("stellarith.fabrica.extensions.table")
 
 --- A special list containing unique elements only once. Indexing
 --- elements have a time complexity of `O(1)`.
@@ -50,14 +50,14 @@ require("stellarith.fabrica.extensions.table")
 local EXISTS = true
 
 --- @overload fun(...: any): Set
-Set = Class()
+local Set = Class()
 
-constructor(Set, function(...)
+Class.constructor(Set, function(...)
 	local entries = {}
 	for _, element in ipairs({ ... }) do
 		entries[element] = EXISTS
 	end
-	return new(Set, { _entries = entries })
+	return Class.new(Set, { _entries = entries })
 end)
 
 --- @class Set
@@ -74,7 +74,7 @@ function Set.from_list(list)
 	for _, element in ipairs(list) do
 		entries[element] = EXISTS
 	end
-	return new(Set, { _entries = entries })
+	return Class.new(Set, { _entries = entries })
 end
 
 --- @class Set
