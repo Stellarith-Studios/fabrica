@@ -28,11 +28,15 @@
 -- File Authors:
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
+
+--- @class stringlibext: stringlib
+local stringext = string or {}
+
 --- Returns wheather the string `s` begins with the string `b`.
 --- @param s string
 --- @param b string
 --- @return boolean
-function string.begins_with(s, b)
+function stringext.begins_with(s, b)
 	local begin_sub = s:sub(1, b:len())
 	return begin_sub == b
 end
@@ -41,7 +45,7 @@ end
 --- @param s string
 --- @param e string
 --- @return boolean
-function string.ends_with(s, e)
+function stringext.ends_with(s, e)
 	local len = s:len()
 	local end_sub = s:sub(len - e:len() + 1, len)
 	return end_sub == e
@@ -54,7 +58,7 @@ end
 --- @param init integer? the index to start looking at.
 --- @param plain boolean? wheather `pattern` should be treated as plain text or not.
 --- @return boolean
-function string.contains(s, pattern, init, plain)
+function stringext.contains(s, pattern, init, plain)
 	local start = s:find(pattern, init, plain)
 	return start ~= nil
 end
@@ -62,9 +66,9 @@ end
 --- Creates a new string with the string `s` converted to snake_case.
 --- @param s string
 --- @return string
-function string.snake_case(s)
+function stringext.snake_case(s)
 	local res, _ = s:lower():gsub(" ", "_")
 	return res
 end
 
-return string
+return stringext

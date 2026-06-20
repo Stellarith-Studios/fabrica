@@ -39,8 +39,6 @@ local AnsiFormat = require("stellarith.fabrica.logging.ansiformat")
 --- @field prefix string
 --- @field formatter AnsiFormat
 --- @field history_enabled boolean
-
---- Constructs a new `Logger`.
 --- @overload fun(prefix: string, format: AnsiFormat?, silent: boolean?, enable_history: boolean?): Logger
 local Logger = Class()
 
@@ -62,37 +60,20 @@ Class.constructor(Logger, function(prefix, formatter, silent, enable_history)
 	})
 end)
 
---- @class Logger
---- Returns wheather the logger is able to print messages.
---- @field is_silent fun(self: Logger): boolean
-
 --- Returns wheather the logger is able to print messages.
 function Logger:is_silent()
 	return self.silent
 end
-
---- @class Logger
---- Mutes the logger, disabling message printing.
---- @field mute fun(self: Logger)
 
 --- Mutes the logger, disabling message printing.
 function Logger:mute()
 	self.silent = true
 end
 
---- @class Logger
---- Unmutes the logger, enabling message printing.
---- @field unmute fun(self: Logger)
-
 --- Unmutes the logger, enabling message printing.
 function Logger:unmute()
 	self.silent = false
 end
-
---- @class Logger
---- Enables the logging history, recording every message
---- dispatched.
---- @field enable_history fun(self: Logger)
 
 --- Enables the logging history, recording every message
 --- dispatched.
@@ -100,20 +81,11 @@ function Logger:enable_history()
 	self.history_enabled = true
 end
 
---- @class Logger
---- Disables the logging history, stopping recording every
---- message dispatched.
---- @field disable_history fun(self: Logger)
-
 --- Disables the logging history, stopping recording every
 --- message dispatched.
 function Logger:disable_history()
 	self.history_enabled = false
 end
-
---- @class Logger
---- Clears the logging history.
---- @field clear_history fun(self: Logger)
 
 --- Clears the logging history.
 function Logger:clear_history()
@@ -129,10 +101,6 @@ function Logger:foreach_history(func)
 	end
 end
 
---- @class Logger
---- Prints the whole history of recorded messages with timestamps.
---- @field print_history fun(self: Logger)
-
 --- Prints the whole history of recorded messages with timestamps.
 function Logger:print_history()
 	print("History of logger [" .. self.prefix .. "]")
@@ -141,13 +109,6 @@ function Logger:print_history()
 		print(line)
 	end)
 end
-
---- @class Logger
---- Dispatches the message with the prefix of the logger, records
---- the message and the time it was sent in `history` if the
---- logger has `history_enabled` set to true, and prints the message
---- if the logger is not `silent`.
---- @field print fun(self: Logger, ...: any)
 
 --- Dispatches the message with the prefix of the logger, records
 --- the message and the time it was sent in `history` if the
@@ -175,13 +136,6 @@ function Logger:print(...)
 		print(self.formatter:format("[" .. self.prefix .. "]") .. " " .. line)
 	end
 end
-
---- @class Logger
---- Dispatches the message with the prefix of the logger, records
---- the message and the time it was sent in `history` if the
---- logger has `history_enabled` set to true, and prints the message
---- if the logger is not `silent`.
---- @field log fun(self: Logger, ...: any)
 
 --- Dispatches the message with the prefix of the logger, records
 --- the message and the time it was sent in `history` if the

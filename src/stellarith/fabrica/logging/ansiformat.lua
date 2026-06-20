@@ -51,9 +51,14 @@ end
 --- @field reverse boolean
 --- Wheather the text is hidden or not.
 --- @field hidden boolean
-
---- Constructs a new `AnsiFormat`.
---- @overload fun(fg: AnsiFormat.Color?, bg: AnsiFormat.Color?, intensity: AnsiFormat.ColorIntensity?, underscore: boolean?, blink: boolean?, reverse: boolean?, hidden: boolean?): AnsiFormat
+--- @overload fun(
+---     fg: AnsiFormat.Color?,
+---     bg: AnsiFormat.Color?,
+---     intensity: AnsiFormat.ColorIntensity?,
+---     underscore: boolean?,
+---     blink: boolean?,
+---     reverse: boolean?,
+---     hidden: boolean?): AnsiFormat
 local AnsiFormat = Class()
 
 --- @enum AnsiFormat.Color

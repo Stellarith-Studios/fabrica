@@ -57,15 +57,13 @@ local Class = require("stellarith.fabrica.class")
 --- **The max properly supported size of a linked list is `163854`
 --- by default, this is the same as `LinkedListNode.ITERATION_CAP`,
 --- which can be changed globally.**
---- @generic T
+--- @generic T, N
 --- @class LinkedListNode<T>
 --- The value this node contains.
 --- @field value T
 --- The next node in the linked list sequence.
---- @field next LinkedListNode<any>
-
---- @generic T
---- @overload fun(value: T?, next: LinkedListNode<any>?): LinkedListNode<T>
+--- @field next LinkedListNode<N>
+--- @overload fun(value: T?, next: LinkedListNode<N>?): LinkedListNode<T>
 local LinkedListNode = Class()
 
 --- The index at which the linked tree iterations stop, every
@@ -90,21 +88,6 @@ Class.constructor(LinkedListNode, function(value, next)
 	})
 end)
 
---- @generic T
---- @class LinkedListNode<T>
---- Does `steps` many next operations over the linked list node.
---- If `steps` is less then the number of nodes after this one
---- this returns `nil` instead.
----
---- Example:
---- ```
---- local node2 = LinkedListNode(5, nil)
---- local node1 = LinkedListNode(5, node2)
---- local node0 = LinkedListNode(5, node1)
---- assert(node0.next.next == node0:skip(2))
---- ```
---- @field skip fun(self: LinkedListNode<T>, steps: integer): LinkedListNode<any>
-
 --- Does `steps` many next operations over the linked list node.
 --- If `steps` is less then the number of nodes after this one
 --- this returns `nil` instead.
@@ -127,12 +110,6 @@ function LinkedListNode:skip(steps)
 	return current
 end
 
---- @class LinkedListNode
---- Returns wheather the node is the end node or not, meaning
---- it has no next set, this is always `false` on cyclic linked
---- list nodes.
---- @field is_end fun(self: LinkedListNode): boolean
-
 --- Returns wheather the node is the end node or not, meaning
 --- it has no next set, this is always `false` on cyclic linked
 --- list nodes.
@@ -140,14 +117,6 @@ end
 function LinkedListNode:is_end()
 	return self.next == nil
 end
-
---- @class LinkedListNode
---- Returns wheather the entire linked list is cyclic (the ending
---- node references the starting node) or not.
----
---- Returns `true` if the iteration cap was reached, since that
---- is the maximum size for a linked list.
---- @field is_cyclic fun(self: LinkedListNode): boolean
 
 --- Returns wheather the entire linked list is cyclic (the ending
 --- node references the starting node) or not.
@@ -166,14 +135,6 @@ function LinkedListNode:is_cyclic()
 	end
 	return false
 end
-
---- @class LinkedListNode
---- Returns wheather the entire linked list is linear (the ending
---- node references `nil`) or not.
----
---- Returns `false` if the iteration cap was reached, since that
---- is the maximum size for a linked list.
---- @field is_linear fun(self: LinkedListNode): boolean
 
 --- Returns wheather the entire linked list is linear (the ending
 --- node references `nil`) or not.
@@ -202,24 +163,6 @@ local function list_next(head, current)
 	return next_node, next_node.value
 end
 
---- @class LinkedListNode
---- Returns a stateless iterator function over the values of the
---- nodes in this linked list starting from this node to be used
---- in a for loop.
----
---- Example:
---- ```
---- local node1 = LinkedListNode("foo", nil)
---- local node0 = LinkedListNode("bar", node1)
---- node1.next = node0
---- local iterations = 0
---- for _value in node0:iter() do
----  iterations = iterations + 1
---- end
---- assert(iterations == 2)
---- ```
---- @field iter fun(): function, LinkedListNode, nil
-
 --- Returns a stateless iterator function over the values of the
 --- nodes in this linked list starting from this node to be used
 --- in a for loop.
@@ -242,13 +185,6 @@ function LinkedListNode:iter()
 	return list_next, self, nil
 end
 
---- @class LinkedListNode
---- Iterates over the nodes in the linked list starting from this
---- node, calling `func(v)` where `v`: value of the node for each
---- node. To iterate over *every* node in a linear linked list,
---- call this on the starting node.
---- @field foreach fun(func: fun(value: any))
-
 --- Iterates over the nodes in the linked list starting from this
 --- node, calling `func(v)` where `v`: value of the node for each
 --- node. To iterate over *every* node in a linear linked list,
@@ -265,14 +201,6 @@ function LinkedListNode:foreach(func)
 		if current == self then return end
 	end
 end
-
---- @class LinkedListNode
---- Iterates over the nodes in the linked list starting from this
---- node, calling `func(v)` where `v`: value of the node for each
---- node and changing the value of the current node to the return
---- value. To iterate over *every* node in a linear linked list,
---- call this on the starting node.
---- @field map fun(func: fun(value: any): any)
 
 --- Iterates over the nodes in the linked list starting from this
 --- node, calling `func(v)` where `v`: value of the node for each
@@ -293,12 +221,6 @@ function LinkedListNode:map(func)
 	end
 end
 
---- @class LinkedListNode
---- Iterates over each node in the linked list starting from
---- this node, adding them to a `list`, returning the resulting
---- `list`.
---- @field collect fun(self: LinkedListNode): table
-
 --- Iterates over each node in the linked list starting from
 --- this node, adding them to a `list`, returning the resulting
 --- `list`.
@@ -310,16 +232,6 @@ function LinkedListNode:collect()
 	end)
 	return collection
 end
-
---- @class LinkedListNode
---- Iterates over each node in the linked list starting from
---- this node, adding them to a `table` with key value pairs
---- `key_generator(v): v` returning the resulting `table`.
----
---- Since two keys of the same value cannot be in the same
---- table, the later node's value will be used when two
---- same keys are generated.
---- @field collect_pairs fun(self: LinkedListNode, key_generator: fun(value: any): any): table
 
 --- Iterates over each node in the linked list starting from
 --- this node, adding them to a `table` with key value pairs
@@ -338,16 +250,6 @@ function LinkedListNode:collect_pairs(key_generator)
 	return collection
 end
 
---- @class LinkedListNode
---- Iterates over each node in the linked list starting from
---- this node, adding them to a `table` with key value pairs
---- `v: value_generator(v)` returning the resulting `table`.
----
---- Since two keys of the same value cannot be in the same
---- table, the later node's generated value will be used when
---- two same keys are present.
---- @field collect_kpairs fun(self: LinkedListNode, value_generator: fun(value: any): any): table
-
 --- Iterates over each node in the linked list starting from
 --- this node, adding them to a `table` with key value pairs
 --- `v: value_generator(v)` returning the resulting `table`.
@@ -364,17 +266,6 @@ function LinkedListNode:collect_kpairs(value_generator)
 	end)
 	return collection
 end
-
---- @class LinkedListNode
---- Iterates over each node in the linked list starting from
---- this node, adding them to a `table` with key value pairs
---- `key_generator(v): value_generator(v)` returning the
---- resulting `table`.
----
---- Since two keys of the same value cannot be in the same
---- table, the later node's generated value will be used when
---- two same keys are generated.
---- @field collect_kvpairs fun(self: LinkedListNode, key_generator: fun(value: any): any, value_generator: fun(value: any): any): table
 
 --- Iterates over each node in the linked list starting from
 --- this node, adding them to a `table` with key value pairs

@@ -6,7 +6,7 @@ local dispatch = {}
 --- `class` is not required to be created with this library, it can be a
 --- table with a metatable.
 --- @generic T
---- @param class class_table | class
+--- @param class T
 --- @return (fun(...): T)?
 function dispatch.get_constructor(class)
 	local mt = getmetatable(class)
@@ -25,7 +25,7 @@ end
 --- `class` is not required to be created with this library, it can be a
 --- table with a metatable.
 --- @generic T
---- @param class class_table | class
+--- @param class T
 --- @return (fun(...): T)?
 function dispatch.get_destructor(class)
 	local mt = getmetatable(class)
@@ -44,7 +44,8 @@ end
 --- functions of `class`.
 ---
 --- If `class` is too big this may lower performance significantly.
---- @param class any
+--- @generic T
+--- @param class T
 --- @return table
 function dispatch.copy_class(class)
 	local nc = table.copy(class)
