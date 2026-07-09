@@ -29,11 +29,10 @@
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 return {
-	collections = require("stellarith.fabrica.collections"),
-	extensions = require("stellarith.fabrica.extensions"),
-	logging = require("stellarith.fabrica.logging"),
-
-	Class = require("stellarith.fabrica.class"),
-	Event = require("stellarith.fabrica.event"),
-	Reflection = require("stellarith.fabrica.reflection")
+    Class = require("stellarith.fabrica.class"),
+    collections = require("stellarith.fabrica.collections"),
+    Event = require("stellarith.fabrica.event"),
+    extensions = require("stellarith.fabrica.extensions"),
+    logging = require("stellarith.fabrica.logging"),
+    Reflection = require("stellarith.fabrica.reflection"),
 }

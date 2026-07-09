@@ -1,6 +1,6 @@
 local table = require("stellarith.fabrica.extensions.table")
 
-local dispatch = {}
+local Reflection = {}
 
 --- Gets the constructor for the `class`. Returns `nil` if there isn't any.
 --- `class` is not required to be created with this library, it can be a
@@ -8,7 +8,7 @@ local dispatch = {}
 --- @generic T
 --- @param class T
 --- @return (fun(...): T)?
-function dispatch.get_constructor(class)
+function Reflection.get_constructor(class)
 	local mt = getmetatable(class)
 	if mt then
 		local m_call = mt.__call
@@ -27,7 +27,7 @@ end
 --- @generic T
 --- @param class T
 --- @return (fun(...): T)?
-function dispatch.get_destructor(class)
+function Reflection.get_destructor(class)
 	local mt = getmetatable(class)
 	if mt then
 		local m_close = mt.__close
@@ -47,7 +47,7 @@ end
 --- @generic T
 --- @param class T
 --- @return table
-function dispatch.copy_class(class)
+function Reflection.copy_class(class)
 	local nc = table.copy(class)
 	local mt = getmetatable(class)
 	if mt then
@@ -56,4 +56,4 @@ function dispatch.copy_class(class)
 	return nc
 end
 
-return dispatch
+return Reflection

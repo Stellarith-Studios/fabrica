@@ -39,27 +39,27 @@ local SET_PREFIX = "set_"
 --- @generic B
 --- @generic T
 --- @overload fun(base: B?): T
-local dispatch = {}
+local Class = {}
 
 --- Returns the private name for the field with name `field`. This will be used
 --- to provide proper getter functionality.
 --- @param field string
 --- @return string
-function dispatch.get_field_name(field)
+function Class.get_field_name(field)
 	return PRIVATE_PREFIX .. field
 end
 
 --- Returns the getter method name for the field with name `field`.
 --- @param field string
 --- @return string
-function dispatch.get_getter_name(field)
+function Class.get_getter_name(field)
 	return GET_PREFIX .. field
 end
 
 --- Returns the setter method name for the field with name `field`.
 --- @param field string
 --- @return string
-function dispatch.get_setter_name(field)
+function Class.get_setter_name(field)
 	return SET_PREFIX .. field
 end
 
@@ -70,21 +70,21 @@ end
 --- @generic T, B
 --- @param class T
 --- @return B?
-function dispatch.super(class)
+function Class.super(class)
 	---@cast class Class
 	return class._base
 end
 
-local m_get_field_name = dispatch.get_field_name
-local m_get_getter_name = dispatch.get_getter_name
-local m_get_setter_name = dispatch.get_setter_name
-local m_super = dispatch.super
+local m_get_field_name = Class.get_field_name
+local m_get_getter_name = Class.get_getter_name
+local m_get_setter_name = Class.get_setter_name
+local m_super = Class.super
 
 --- Rawgets the given `key`'s private version' on instance `instance` properly
 --- without indexing the instance table, intended to be used on a getter method.
 --- @param instance unknown
 --- @param public_key string
-function dispatch.raw_get_field(instance, public_key)
+function Class.raw_get_field(instance, public_key)
 	return rawget(instance, m_get_field_name(public_key))
 end
 
@@ -113,7 +113,7 @@ local function standard_getter(class, instance, key)
 		end
 	end
 
-	return dispatch.raw_get_field(instance, key)
+	return Class.raw_get_field(instance, key)
 end
 
 local function getterize(class)
@@ -127,7 +127,7 @@ end
 --- @param instance unknown
 --- @param public_key string
 --- @param value? any
-function dispatch.raw_set_field(instance, public_key, value)
+function Class.raw_set_field(instance, public_key, value)
 	rawset(instance, m_get_field_name(public_key), value)
 end
 
@@ -142,7 +142,7 @@ local function standard_setter(class, instance, key, value)
 			local base_setter_function = rawget(base, setter_name)
 			base_setter_function(instance, value)
 		else
-			dispatch.raw_set_field(instance, key, value)
+			Class.raw_set_field(instance, key, value)
 		end
 	end
 end
@@ -192,7 +192,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(...): T
-function dispatch.constructor(class, func)
+function Class.constructor(class, func)
 	local mt = getmetatable(class) or {}
 	-- since class constructors dont need the class to be provided in the first
 	-- argument let's pipe it to an unused argument:
@@ -206,7 +206,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(err: any)
-function dispatch.destructor(class, func)
+function Class.destructor(class, func)
 	local mt = getmetatable(class) or {}
 	mt.__close = function(_, err)
 		return func(err)
@@ -219,19 +219,19 @@ end
 --- @param class T
 --- @param name string
 --- @param func function
-function dispatch.operator(class, name, func)
+function Class.operator(class, name, func)
 	local mt = getmetatable(class) or {}
 	mt[name] = func
 	setmetatable(class, mt)
 end
 
-local m_operator = dispatch.operator
+local m_operator = Class.operator
 
 --- Defines the `+` (addition) operator for `class`.
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.add_op(class, func)
+function Class.add_op(class, func)
 	m_operator(class, "__add", func)
 end
 
@@ -239,7 +239,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.sub_op(class, func)
+function Class.sub_op(class, func)
 	m_operator(class, "__sub", func)
 end
 
@@ -247,7 +247,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.mul_op(class, func)
+function Class.mul_op(class, func)
 	m_operator(class, "__mul", func)
 end
 
@@ -255,7 +255,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.div_op(class, func)
+function Class.div_op(class, func)
 	m_operator(class, "__div", func)
 end
 
@@ -263,7 +263,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.unm_op(class, func)
+function Class.unm_op(class, func)
 	m_operator(class, "__unm", func)
 end
 
@@ -271,7 +271,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.mod_op(class, func)
+function Class.mod_op(class, func)
 	m_operator(class, "__mod", func)
 end
 
@@ -279,7 +279,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.pow_op(class, func)
+function Class.pow_op(class, func)
 	m_operator(class, "__pow", func)
 end
 
@@ -287,7 +287,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): any
-function dispatch.idiv_op(class, func)
+function Class.idiv_op(class, func)
 	m_operator(class, "__idiv", func)
 end
 
@@ -295,7 +295,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): boolean
-function dispatch.eq_op(class, func)
+function Class.eq_op(class, func)
 	m_operator(class, "__eq", func)
 end
 
@@ -303,7 +303,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): boolean
-function dispatch.lt_op(class, func)
+function Class.lt_op(class, func)
 	m_operator(class, "__lt", func)
 end
 
@@ -311,7 +311,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): boolean
-function dispatch.le_op(class, func)
+function Class.le_op(class, func)
 	m_operator(class, "__le", func)
 end
 
@@ -319,7 +319,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(lhs: any, rhs: any): string
-function dispatch.concat_op(class, func)
+function Class.concat_op(class, func)
 	m_operator(class, "__concat", func)
 end
 
@@ -327,7 +327,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(inst: T): integer
-function dispatch.len_op(class, func)
+function Class.len_op(class, func)
 	m_operator(class, "__len", func)
 end
 
@@ -335,7 +335,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(inst: T): string
-function dispatch.formatter(class, func)
+function Class.formatter(class, func)
 	m_operator(class, "__tostring", func)
 end
 
@@ -343,7 +343,7 @@ end
 --- @generic T
 --- @param class T
 --- @param func fun(inst: T): function, ...: any
-function dispatch.iterator(class, func)
+function Class.iterator(class, func)
 	m_operator(class, "__pairs", func)
 end
 
@@ -354,7 +354,7 @@ end
 --- @param class `T`
 --- @param defaults? table
 --- @return T
-function dispatch.new(class, defaults)
+function Class.new(class, defaults)
 	local instance = defaults or {}
 	setmetatable(instance, class --[[@as metatable]])
 	return instance
@@ -371,7 +371,7 @@ local READONLY_FUNCTION = function(t, v) error(READONLY_ERROR:format(tostring(t)
 --- @generic T
 --- @param class T class that owns fields to be marked readonly
 --- @param ... string fields to be marked readonly
-function dispatch.readonly(class, ...)
+function Class.readonly(class, ...)
 	for _, field in ipairs({ ... }) do
 		class["set_" .. field] = READONLY_FUNCTION
 	end
@@ -383,7 +383,7 @@ end
 --- @param class T
 --- @param setter fun(instance: T, field: string, value: any)
 --- @param ... string
-function dispatch.uniform_setter(class, setter, ...)
+function Class.uniform_setter(class, setter, ...)
 	for _, field in ipairs({ ... }) do
 		class["set_" .. field] = function(t, value) setter(t, field, value) end
 	end
@@ -395,16 +395,16 @@ end
 --- @param class T
 --- @param getter fun(instance: T, field: string)
 --- @param ... string
-function dispatch.uniform_getter(class, getter, ...)
+function Class.uniform_getter(class, getter, ...)
 	for _, field in ipairs({ ... }) do
 		class["get_" .. field] = function(t) getter(t, field) end
 	end
 end
 
-setmetatable(dispatch --[[@as table]], {
+setmetatable(Class --[[@as table]], {
 	__call = function(t, base)
 		return create_class(base)
 	end
 })
 
-return dispatch
+return Class

@@ -29,6 +29,6 @@
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 return {
-	string = require("stellarith.fabrica.extensions.string"),
-	table = require("stellarith.fabrica.extensions.table"),
+    stringext = require("stellarith.fabrica.extensions.string"),
+    tablext = require("stellarith.fabrica.extensions.table"),
 }

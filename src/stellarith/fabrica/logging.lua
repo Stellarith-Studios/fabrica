@@ -29,6 +29,6 @@
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 return {
-	AnsiFormat = require("stellarith.fabrica.logging.ansiformat"),
-	Logger = require("stellarith.fabrica.logging.logger"),
+    AnsiFormat = require("stellarith.fabrica.logging.ansiformat"),
+    Logger = require("stellarith.fabrica.logging.logger"),
 }

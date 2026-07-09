@@ -29,8 +29,8 @@
 --   - Yarkın Saatçi (xpoxy)
 -- -----------------------------------------------------------------
 return {
-	LinkedListNode = require("stellarith.fabrica.collections.linkedlist"),
-	Queue = require("stellarith.fabrica.collections.queue"),
-	Set = require("stellarith.fabrica.collections.set"),
-	Stack = require("stellarith.fabrica.collections.stack"),
+    LinkedListNode = require("stellarith.fabrica.collections.linkedlist"),
+    Queue = require("stellarith.fabrica.collections.queue"),
+    Set = require("stellarith.fabrica.collections.set"),
+    Stack = require("stellarith.fabrica.collections.stack"),
 }
